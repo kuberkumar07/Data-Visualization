@@ -20,17 +20,21 @@ def histogram_plot(df):
 
 
 def line_plot(df):
-    plt.figure(figsize=(10, 6))
-    for column in df.columns[:-1]:
-        plt.plot(df[column], marker='o', linestyle='-', label=column)
-    plt.title('Line Plot: Comparison Across columns')
-    plt.xlabel('Index')
-    plt.ylabel('Values')
-    plt.grid(True)
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(f'{base_path_output}/Output_{data_file_name}_LinePlot.png')
-    plt.close()
+    # Select only numeric columns
+    numeric_columns = df.select_dtypes(include=['number']).columns
+    # Plot histogram for each numeric column
+    for column in numeric_columns:
+        plt.figure(figsize=(6, 6))
+        numeric_data = df.select_dtypes(include='number')
+        # print(numeric_data)
+        plt.plot(numeric_data[column], color='green', label=column, linestyle='-', marker='o')
+        plt.title('Line Plot')
+        plt.xlabel('Index')
+        plt.ylabel(column)
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f'{base_path_output}/Output_{column}_LinePlot.png')
+        plt.close()
 
 
 def scatter_plot(df):
@@ -88,9 +92,9 @@ def main():
 
     mean_values, mode_values, median_values, range_values, std_div_values = calculate_statistics(df)
     histogram_plot(df)
-    line_plot(df)
     scatter_plot(df)
     box_plot(df)
+    line_plot(df)
 
 
 main()
