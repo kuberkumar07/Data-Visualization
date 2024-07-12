@@ -3,11 +3,25 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import constants as const
+import shutil
 
 
 base_path = const.base_path
 base_path_output = f'{base_path}/output'
 data_file_name = None
+os.makedirs(base_path_output, exist_ok=True)
+
+
+def clear_directory(directory):
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')
 
 
 def histogram_plot(df):
@@ -86,16 +100,20 @@ def main():
 
     # Split the base name to remove the extension (e.g., 'iris')
     data_file_name = os.path.splitext(base_name)[0]
+
+    clear_directory(directory=base_path_output)
+
     excel_file = f'{base_path_output}/{data_file_name}.xlsx'
     df.to_excel(excel_file, index=False)
     print(f"Data has been successfully converted to {excel_file} ")
 
     mean_values, mode_values, median_values, range_values, std_div_values = calculate_statistics(df)
+
     histogram_plot(df)
     scatter_plot(df)
     box_plot(df)
     line_plot(df)
 
 
-main()
-
+if __name__ == "__main__":
+    main()
