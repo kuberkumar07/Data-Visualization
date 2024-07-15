@@ -82,13 +82,15 @@ def calculate_statistics(df):
     median_values = df.median(numeric_only=True)
     range_values = df.max(numeric_only=True) - df.min(numeric_only=True)
     std_div_values = df.std(numeric_only=True)
+    correlation_matrix = df.corr(numeric_only=True)
 
     print(f"Mean for the columns:\n{mean_values}")
     print(f"Mode for the columns:\n{mode_values}")
     print(f"Range for the columns:\n{median_values}")
     print(f"Range for the columns:\n{range_values}")
     print(f'Standard Division for the columns:\n{std_div_values}')
-    return mean_values, mode_values, median_values, range_values, std_div_values
+    print(f"Correlation matrix for the columns:\n{correlation_matrix}")
+    return mean_values, mode_values, median_values, range_values, std_div_values, correlation_matrix
 
 
 def main():
@@ -107,7 +109,7 @@ def main():
     df.to_excel(excel_file, index=False)
     print(f"Data has been successfully converted to {excel_file} ")
 
-    mean_values, mode_values, median_values, range_values, std_div_values = calculate_statistics(df)
+    mean_values, mode_values, median_values, range_values, std_div_values, correlation_matrix = calculate_statistics(df)
 
     histogram_plot(df)
     scatter_plot(df)

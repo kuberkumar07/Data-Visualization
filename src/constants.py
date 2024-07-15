@@ -1,3 +1,1 @@
-base_path = 'Give your path'
-
-#sample path is 'C://User/data-visualization'
+base_path = 'C:\\Users\\kuber\\PycharmProjects\\Data-Visualization'
